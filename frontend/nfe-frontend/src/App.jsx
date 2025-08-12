@@ -35,7 +35,7 @@ function App() {
         formData.append('xmlFiles', arquivo)
       })
 
-      const response = await fetch('http://localhost:5510/upload', {
+      const response = await fetch('http://gestao-api.dev.br:5510/upload', {
         method: 'POST',
         body: formData
       })
