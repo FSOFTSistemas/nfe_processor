@@ -141,7 +141,29 @@ app.post('/upload', upload.array('xmlFiles'), (req, res) => {
   }
 });
 
-// Iniciar servidor
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// // Iniciar servidor
+// app.listen(PORT, '0.0.0.0', () => {
+//   console.log(`Servidor rodando na porta ${PORT}`);
+// });
+
+
+// Lendo os certificados SSL
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/gestao-api.dev.br/privkey.pem"),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/gestao-api.dev.br/fullchain.pem"
+  ),
+};
+
+
+// Função principal
+(async () => {
+  try {
+    // Criando o servidor HTTPS
+    https.createServer(options, app).listen(PORT, () => {
+      console.log(`✅ Servidor rodando em HTTPS na porta ${PORT}`);
+    });
+  } catch (error) {
+    console.error("🔴 Erro ao iniciar o servidor:", error);
+  }
+})();
